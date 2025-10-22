@@ -1,0 +1,20 @@
+<h2>Catalogo</h2>
+
+<div *ngIf="productos.length === 0" class="no-productos">
+  <p>No hay productos disponibles.</p>
+</div>
+
+<div class="catalogo">
+  <div *ngFor="let producto of productos" class="producto-card">
+    <img [src]="producto.url_imagen" alt="{{ producto.nombre }}" class="producto-imagen" />
+    <div class="producto-info">
+      <h3>{{ producto.nombre }}</h3>
+      <p>{{ producto.descripcion }}</p>
+      <p class="precio">{{ producto.precio | currency:'USD' }}</p>
+      <button (click)="onAgregarAlCarrito(producto)">
+        Agregar al Carrito 🛒
+      </button>
+    </div>
+  </div>
+  <app-checkout></app-checkout>
+</div>

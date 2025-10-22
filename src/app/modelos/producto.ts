@@ -3,4 +3,5 @@ export interface Producto {
   nombre: string;
   precio: number;
   descripcion: string;
+  url_imagen: string;
 }

@@ -1,37 +1,49 @@
-
-import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { CatalogoService } from '../../servicios/catalogo.service';
-import { CheckoutComponent } from '../../components/checkout/checkout';
-import { CarritoService, Producto } from '../../servicios/carrito.service';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { CarritoService } from '../../servicios/carrito.service';
+import { Producto } from '../../modelos/producto'; 
+import { ProductoService } from '../../servicios/producto.service';
 
 @Component({
   selector: 'app-catalogo',
-  standalone: true, 
-  imports: [CommonModule, CurrencyPipe, CheckoutComponent],
+  standalone: true,
+  imports: [CommonModule, RouterLink], 
   templateUrl: './catalogo.component.html',
-  styleUrls: ['./catalogo.css']
+  // Quitamos la referencia al CSS que daba error
+  styleUrls: [] 
 })
-export class CatalogoComponent implements OnInit {
+export class CatalogoComponent implements OnInit { 
+  
   private carritoService = inject(CarritoService);
+  private productoService = inject(ProductoService); 
 
-  productos: any[] = [];
+  public listaDeProductos: WritableSignal<Producto[]> = signal([]);
 
-  constructor(private catalogoService: CatalogoService) {}
+  constructor() { }
 
-  ngOnInit(): void {
-    this.catalogoService.obtenerProductos().subscribe({
-      next: (data) => {
-        this.productos = data;
-        console.log('Productos obtenidos:', this.productos);
+  // ESTA ES LA PARTE CORREGIDA
+  ngOnInit() {
+    // 1. Llamamos al servicio, que nos da un Observable
+    this.productoService.getProductos().subscribe({
+      
+      // 2. El bloque 'next' se ejecuta cuando los datos llegan
+      next: (data: Producto[]) => {
+        // 'data' aquí SÍ es el array de Producto[]
+        
+        // 3. Guardamos el array (data) en el Signal.
+        // Esta es la línea que te daba error.
+        this.listaDeProductos.set(data); 
+        console.log('Productos cargados desde la API:', data);
       },
-      error: (err) => {
-        console.error('Error al cargar productos:', err);
+      error: (err: any) => {
+        console.error('Error al cargar productos desde la API:', err);
+        alert('No se pudieron cargar los productos. ¿Iniciaste el servidor del backend?');
       }
     });
+  }
 
   public onAgregarAlCarrito(producto: Producto) {
     this.carritoService.agregar(producto);
-  }
   }
 }

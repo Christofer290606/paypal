@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Yammie!</a>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" routerLink="/login">Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
+  <div class="card p-4 shadow-lg" style="width: 20rem;">
+    <h2 class="text-center mb-4">Registro</h2>
+    <form (ngSubmit)="onRegistro()">
+      <div class="mb-3">
+        <input type="text" class="form-control" id="nombreUsuario" placeholder="Usuario" required [(ngModel)]="nombre_usuario" name="nombreUsuario">
+      </div>
+      <div class="mb-3">
+        <input type="password" class="form-control" id="contrasena" placeholder="Contraseña" required [(ngModel)]="contrasena" name="contrasena">
+      </div>
+      <button type="submit" class="btn btn-success w-100 mb-2">Registrar</button>
+      <a routerLink="/login" class="btn btn-outline-secondary w-100">Volver a Login</a>
+    </form>
+  </div>
+</div>

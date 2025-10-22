@@ -1,20 +1,28 @@
 <h2>Catalogo</h2>
 
-<div *ngIf="productos.length === 0" class="no-productos">
-  <p>No hay productos disponibles.</p>
-</div>
-
-<div class="catalogo">
-  <div *ngFor="let producto of productos" class="producto-card">
-    <img [src]="producto.url_imagen" alt="{{ producto.nombre }}" class="producto-imagen" />
-    <div class="producto-info">
-      <h3>{{ producto.nombre }}</h3>
-      <p>{{ producto.descripcion }}</p>
-      <p class="precio">{{ producto.precio | currency:'USD' }}</p>
-      <button (click)="onAgregarAlCarrito(producto)">
-        Agregar al Carrito 🛒
-      </button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Yammie!</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/finalizar">Ver Carrito 🛒</a></li>
+      </ul>
     </div>
   </div>
-  <app-checkout></app-checkout>
+</nav>
+
+<h2 class="mb-4 text-center">Elige tu comida</h2>
+
+<div class="d-flex flex-wrap justify-content-center gap-4">
+    
+  @for (producto of listaDeProductos(); track producto.id) {
+    <div class="card" style="width: 10rem; cursor: pointer;" (click)="onAgregarAlCarrito(producto)">
+      <img [src]="producto.url_imagen" class="card-img-top" [alt]="producto.nombre" style="height: 120px; object-fit: contain;">
+      <div class="card-body p-2">
+        <h6 class="card-title text-center">{{ producto.nombre }}</h6>
+        <p class="card-text text-center text-muted">${{ producto.precio }}.00</p>
+      </div>
+    </div>
+  }
+
 </div>

@@ -1,32 +1,52 @@
-<div class="contenedor-carrito">
-  <h2>Tu Carrito 🧺</h2>
-
-  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">Yammie!</a>
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item"><a class="nav-link" routerLink="/pan">Seguir Comprando</a></li>
-    </ul>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/pan">Seguir Comprando</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 
 <div class="container d-flex flex-column align-items-center">
+
+  <h2 class="text-center mb-4">Tu Carrito 🛒</h2>
+
   <div class="card p-4 shadow-lg mb-3" style="max-width: 500px; width: 100%;">
     <h3 class="text-center mb-3">Resumen de tu pedido</h3>
     
     <div id="reportePedido">
-      @if (carrito().length > 0) {
+      @if (carritoService.productos().length > 0) {
         <p><strong>Productos Seleccionados:</strong></p>
         <ul class="list-group list-group-flush">
-          @for (item of carrito(); track $index) {
+          
+          @for (item of carritoService.productos(); track $index) {
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              {{ item.nombre }}
-              <span>${{ item.precio }}.00</span>
+              <div>
+                {{ item.cantidad }}x {{ item.producto.nombre }}
+                
+                <button 
+                  class="btn btn-sm btn-outline-danger ms-2"
+                  (click)="carritoService.quitar(item.producto.id)">
+                  Quitar
+                </button>
+              </div>
+              <span>${{ (item.producto.precio * item.cantidad) }}.00</span>
             </li>
           }
         </ul>
         <hr>
-        <h4 class="text-end">Total: ${{ total() }}.00</h4>
+        
+        <h4 class="text-end">Total: ${{ carritoService.total() }}.00</h4>
+      
       } @else {
         <p class="text-center text-muted">Tu carrito está vacío.</p>
       }
@@ -35,10 +55,15 @@
 
   <div class="d-flex flex-column" style="max-width: 500px; width: 100%;">
     
-    @if (carrito().length > 0) {
+    @if (carritoService.productos().length > 0) {
       <div id="paypal-button-container" class="mb-2"></div>
+      
+      <button (click)="exportarXML()" class="btn btn-outline-secondary mb-2">
+        Exportar XML
+      </button>
     }
     
     <a routerLink="/pan" class="btn btn-outline-danger">Volver al catálogo</a>
   </div>
+
 </div>

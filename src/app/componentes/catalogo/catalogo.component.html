@@ -20,7 +20,8 @@
       <img [src]="producto.url_imagen" class="card-img-top" [alt]="producto.nombre" style="height: 120px; object-fit: contain;">
       <div class="card-body p-2">
         <h6 class="card-title text-center">{{ producto.nombre }}</h6>
-        <p class="card-text text-center text-muted">${{ producto.precio }}.00</p>
+        <p class="card-text text-center small">{{ producto.descripcion }}</p>
+        <p class="card-text text-center text-muted">${{ producto.precio }}</p>
       </div>
     </div>
   }
